@@ -1,0 +1,257 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .hidden { display: none; }
+        .active { color: #1D4ED8; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold">HAVEN</div>
+            <nav class="space-x-4">
+                <button id="home-btn" onclick="showSection('home')" class="text-gray-600">Home</button>
+                <button id="chat-btn" onclick="showSection('chat')" class="text-gray-600"><i class="fas fa-comments"></i> Chat</button>
+                <button id="breathing-btn" onclick="showSection('breathing')" class="text-gray-600"><i class="fas fa-wave-square"></i> Breathing</button>
+                <button id="music-btn" onclick="showSection('music')" class="text-gray-600"><i class="fas fa-music"></i> Music</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-16">
+        <!-- Home Section -->
+        <section id="home" class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800">Your emotional support companion</h1>
+            <p class="text-gray-600 mt-4">HAVEN is a personal wellbeing space designed to help you manage stress, anxiety, and improve your mental health through chat support, breathing exercises, and therapeutic music.</p>
+            <button onclick="showSection('chat')" class="mt-8 px-6 py-3 bg-blue-600 text-white rounded-full">Get Started</button>
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-4">
+                        <i class="fas fa-comments text-blue-600"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800">Emotional Support Chat</h2>
+                    <p class="text-gray-600 mt-2">Connect with our AI companion for supportive conversations whenever you need someone to talk to.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-4">
+                        <i class="fas fa-wave-square text-blue-600"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800">Breathing Exercises</h2>
+                    <p class="text-gray-600 mt-2">Follow guided breathing patterns to reduce stress and anxiety through mindful breathing techniques.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-4">
+                        <i class="fas fa-music text-blue-600"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800">Therapeutic Music</h2>
+                    <p class="text-gray-600 mt-2">Listen to calming sounds and melodies specifically selected to promote relaxation and wellbeing.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="hidden">
+            <h1 class="text-3xl font-bold text-gray-800 text-center">Emotional Support Chat</h1>
+            <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                <div id="chat-box" class="h-96 overflow-y-auto border p-4 mb-4">
+                    <!-- Chat messages will appear here -->
+                </div>
+                <div class="flex">
+                    <input id="chat-input" type="text" class="flex-grow border rounded-l-lg p-2" placeholder="Type your message...">
+                    <button onclick="sendMessage()" class="bg-blue-600 text-white px-4 py-2 rounded-r-lg">Send</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Breathing Section -->
+        <section id="breathing" class="hidden text-center">
+            <h1 class="text-3xl font-bold text-gray-800">Breathing Exercises</h1>
+            <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                <p class="text-gray-600">Follow the guided breathing patterns to reduce stress and anxiety.</p>
+                <p class="text-gray-600 mt-4">Deep breathing is a simple yet powerful relaxation technique that can help you reduce stress and anxiety. It involves taking slow, deep breaths to bring more oxygen into your body, which can help calm your mind and relax your muscles.</p>
+                <div class="mt-8">
+                    <button onclick="startBreathing()" class="bg-blue-600 text-white px-6 py-3 rounded-full">Start</button>
+                    <button onclick="stopBreathing()" class="bg-red-600 text-white px-6 py-3 rounded-full ml-4">Stop</button>
+                </div>
+                <div id="breathing-guide" class="mt-8 text-2xl font-bold text-gray-800"></div>
+                <div id="breathing-timer" class="mt-4 text-xl text-gray-600"></div>
+            </div>
+        </section>
+
+        <!-- Music Section -->
+        <section id="music" class="hidden text-center">
+            <h1 class="text-3xl font-bold text-gray-800">Therapeutic Music</h1>
+            <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                <p class="text-gray-600">Listen to calming sounds and melodies specifically selected to promote relaxation and wellbeing.</p>
+                <div class="mt-8 space-y-4">
+                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                        <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                        <source src="https://www.bensound.com/bensound-music/bensound-creativeminds.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                        <source src="https://www.bensound.com/bensound-music/bensound-relaxing.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                        <source src="https://www.bensound.com/bensound-music/bensound-sweet.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                        <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                        <source src="https://www.bensound.com/bensound-music/bensound-dreams.mp3" type="audio/mp3">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('main section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            document.querySelectorAll('header nav button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(sectionId + '-btn').classList.add('active');
+        }
+
+        document.getElementById('chat-input').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+    });
+    document.getElementById('chat-input').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    const chatBox = document.getElementById('chat-box');
+
+    // Append user message
+    const userMessage = document.createElement('div');
+    userMessage.className = 'text-right mb-2';
+    userMessage.innerHTML = `<span class="inline-block bg-blue-600 text-white rounded-lg px-4 py-2">${message}</span>`;
+    chatBox.appendChild(userMessage);
+    input.value = '';
+
+    // Add typing indicator
+    const typingIndicator = document.createElement('div');
+    typingIndicator.id = 'typing-indicator';
+    typingIndicator.className = 'text-left mb-2 text-gray-500 italic';
+    typingIndicator.innerText = 'Haven is typing...';
+    chatBox.appendChild(typingIndicator);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Fetch response from backend
+    fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Remove typing indicator
+        typingIndicator.remove();
+
+        // Create AI message container
+        const aiMessage = document.createElement('div');
+        aiMessage.className = 'text-left mb-2';
+        const aiSpan = document.createElement('span');
+        aiSpan.className = 'inline-block bg-gray-200 rounded-lg px-4 py-2';
+        aiMessage.appendChild(aiSpan);
+        chatBox.appendChild(aiMessage);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Typing animation effect
+        let index = 0;
+        function typeEffect() {
+            if (index < data.response.length) {
+                aiSpan.innerHTML += data.response.charAt(index);
+                index++;
+                chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
+                setTimeout(typeEffect, 20); // Adjust typing speed (lower = faster)
+            }
+        }
+        typeEffect();
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        typingIndicator.remove(); // Remove typing indicator in case of error
+    });
+}
+
+
+        let breathingInterval;
+        let timerInterval;
+        let timerCount = 0;
+
+        function startBreathing() {
+            const guide = document.getElementById('breathing-guide');
+            const timer = document.getElementById('breathing-timer');
+            let step = 0;
+            guide.textContent = 'Breathe In...';
+            timerCount = 5;
+            timer.textContent = `Time: ${timerCount} seconds`;
+
+            breathingInterval = setInterval(() => {
+                step = (step + 1) % 3;
+                if (step === 0) {
+                    guide.textContent = 'Breathe In...';
+                    timerCount = 5;
+                } else if (step === 1) {
+                    guide.textContent = 'Hold...';
+                    timerCount = 5;
+                } else if (step === 2) {
+                    guide.textContent = 'Breathe Out...';
+                    timerCount = 8;
+                }
+            }, 5000);
+
+            timerInterval = setInterval(() => {
+                if (timerCount > 0) {
+                    timerCount--;
+                    timer.textContent = `Time: ${timerCount} seconds`;
+                }
+            }, 1000);
+        }
+
+        function stopBreathing() {
+            clearInterval(breathingInterval);
+            clearInterval(timerInterval);
+            document.getElementById('breathing-guide').textContent = '';
+            document.getElementById('breathing-timer').textContent = '';
+        }
+
+        function stopOtherAudios(currentAudio) {
+            document.querySelectorAll('audio').forEach(audio => {
+                if (audio !== currentAudio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
