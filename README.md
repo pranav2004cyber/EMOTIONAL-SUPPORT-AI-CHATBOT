@@ -1,46 +1,54 @@
-# HAVEN.AI
+# Haven AI - Emotional Support Chatbot
 
-## Overview
-HAVEN.AI is an emotional support chatbot built using Streamlit and the Ollama API. It provides conversational support, positive affirmations, and guided meditation scripts to help users manage stress and emotional well-being.
+Haven AI is an empathetic and supportive AI chatbot designed to provide emotional support, active listening, and thoughtful guidance. It helps users manage stress, anxiety, and mental well-being through AI-powered conversations, guided breathing exercises, and therapeutic music.
 
 ## Features
-- **Conversational AI**: Users can chat with the AI, and their conversation history is maintained within the session.
-- **Background Customization**: A background image (`background.png`) is loaded and applied to the interface.
-- **Positive Affirmations**: Generates motivational messages for users.
-- **Guided Meditation**: Provides a short guided meditation script to help users relax.
+- **Emotional Support Chat**: Engage in supportive and non-judgmental conversations with Haven AI.
+- **Guided Breathing Exercises**: Reduce stress and anxiety with interactive breathing exercises.
+- **Therapeutic Music**: Listen to calming sounds to promote relaxation and mental well-being.
 
-## Requirements
-Ensure you have the following installed:
-- Python 3.8+
-- Streamlit (`pip install streamlit`)
-- Ollama (`pip install ollama`)
-- Base64 module (built-in with Python)
+## Technologies Used
+- **Backend**: Flask (Python), Ollama AI model (Llama3)
+- **Frontend**: HTML, Tailwind CSS, JavaScript
+- **API**: Flask REST API for chatbot communication
 
 ## Installation & Setup
-1. Clone the repository or download the script.
-2. Install the required dependencies:
+### Prerequisites
+Ensure you have the following installed:
+- Python 3.8+
+- Flask
+- Flask-CORS
+- Ollama
+
+### Steps
+1. Clone the repository:
    ```sh
-   pip install streamlit ollama
+   git clone https://github.com/your-repo/haven-ai.git
+   cd haven-ai
    ```
-3. Make sure you have the `background.png` file in the same directory.
-4. Pull the required AI model by running:
+2. Install dependencies:
    ```sh
-   ollama pull llama3
+   pip install flask flask-cors
    ```
-5. Run the Streamlit app:
+3. Start the chatbot server:
    ```sh
-   streamlit run app.py
+   python app.py
    ```
+4. Open `index.html` in a browser to interact with Haven AI.
 
 ## Usage
-- Enter your message in the chat input field to start a conversation.
-- Click **"Give me a Positive Affirmation"** to receive an uplifting message.
-- Click **"Give me a Guided Meditation"** for a 5-minute meditation script.
+1. Open Haven AI in your browser.
+2. Start chatting with the AI for emotional support.
+3. Access guided breathing exercises for relaxation.
+4. Listen to therapeutic music to enhance well-being.
 
-## Troubleshooting
-- If the AI model is not found, ensure you have run `ollama pull llama3`.
-- If the background image does not load, verify `background.png` exists in the correct directory.
+## API Endpoints
+- `GET /` - Loads the main page
+- `POST /chat` - Sends user messages to Haven AI and receives responses
 
-## License
-This project is open-source. Feel free to modify and improve it!
-
+## Notes
+- Haven AI maintains chat history per session.
+- If the AI model is missing, run:
+  ```sh
+  ollama pull llama3
+  ```
