@@ -23,7 +23,7 @@ Ensure you have the following installed:
 ### Steps
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/haven-ai.git
+   git clone https://github.com/pranav2004cyber/EMOTIONAL-SUPPORT-AI-CHATBOT.git
    cd haven-ai
    ```
 2. Install dependencies:
