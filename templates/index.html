@@ -8,6 +8,44 @@
     <style>
         .hidden { display: none; }
         .active { color: #1D4ED8; }
+        .quote-box {
+            transition: transform 0.5s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .quote-box.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lung-animation {
+            width: 200px;
+            height: auto;
+            margin: 0 auto;
+            display: none; /* Initially hidden */
+        }
+        .breathing {
+            animation: breathe 4s infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .music-card {
+            background: linear-gradient(135deg, #1db954, #1ed760);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        .music-card:hover {
+            transform: scale(1.05);
+        }
+        .audio-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -52,6 +90,10 @@
                     <p class="text-gray-600 mt-2">Listen to calming sounds and melodies specifically selected to promote relaxation and wellbeing.</p>
                 </div>
             </div>
+            <!-- Quotes Section -->
+            <div id="quotes" class="mt-16">
+                <div class="quote-box" id="quote-box"></div>
+            </div>
         </section>
 
         <!-- Chat Section -->
@@ -72,6 +114,7 @@
         <section id="breathing" class="hidden text-center">
             <h1 class="text-3xl font-bold text-gray-800">Breathing Exercises</h1>
             <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
+                <img id="lung-animation" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmU5MzEyaWdpcTdtMXliNTJxZ3dwM3E2b2JtOGFtOGF3Z2U3ZHJzYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/P0Fi00WY6GbO2hMqEj/giphy.gif" alt="Breathing Animation" class="lung-animation mx-auto mb-4">
                 <p class="text-gray-600">Follow the guided breathing patterns to reduce stress and anxiety.</p>
                 <p class="text-gray-600 mt-4">Deep breathing is a simple yet powerful relaxation technique that can help you reduce stress and anxiety. It involves taking slow, deep breaths to bring more oxygen into your body, which can help calm your mind and relax your muscles.</p>
                 <div class="mt-8">
@@ -86,39 +129,90 @@
         <!-- Music Section -->
         <section id="music" class="hidden text-center">
             <h1 class="text-3xl font-bold text-gray-800">Therapeutic Music</h1>
-            <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
-                <p class="text-gray-600">Listen to calming sounds and melodies specifically selected to promote relaxation and wellbeing.</p>
-                <div class="mt-8 space-y-4">
-                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                        <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                        <source src="https://www.bensound.com/bensound-music/bensound-creativeminds.mp3" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                        <source src="https://www.bensound.com/bensound-music/bensound-relaxing.mp3" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                        <source src="https://www.bensound.com/bensound-music/bensound-sweet.mp3" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                        <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                        <source src="https://www.bensound.com/bensound-music/bensound-dreams.mp3" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
+            <div class="mt-8 space-y-4">
+                <div class="music-card">
+                    <div class="audio-controls">
+                        <span class="text-white">Sunny</span>
+                        <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="audio-controls">
+                        <span class="text-white">Creative Minds</span>
+                        <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                            <source src="https://www.bensound.com/bensound-music/bensound-creativeminds.mp3" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="audio-controls">
+                        <span class="text-white">Relaxing</span>
+                        <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                            <source src="https://www.bensound.com/bensound-music/bensound-relaxing.mp3" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="audio-controls">
+                        <span class="text-white">Sweet</span>
+                        <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                            <source src="https://www.bensound.com/bensound-music/bensound-sweet.mp3" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="audio-controls">
+                        <span class="text-white">Slow Motion</span>
+                        <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                            <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="audio-controls">
+                        <span class="text-white">Dreams</span>
+                        <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                            <source src="https://www.bensound.com/bensound-music/bensound-dreams.mp3" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
     <script>
+        const quotes = [
+            "The best way to predict the future is to create it.",
+            "You are never too old to set another goal or to dream a new dream.",
+            "Believe you can and you're halfway there.",
+            "Act as if what you do makes a difference. It does.",
+            "Success is not final, failure is not fatal: It is the courage to continue that counts."
+        ];
+
+        let currentQuoteIndex = 0;
+
+        function showQuote() {
+            const quoteBox = document.getElementById('quote-box');
+            quoteBox.textContent = quotes[currentQuoteIndex];
+            quoteBox.classList.add('show');
+
+            setTimeout(() => {
+                quoteBox.classList.remove('show');
+                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+                setTimeout(showQuote, 500); // Wait before showing the next quote
+            }, 3000); // Show each quote for 3 seconds
+        }
+
+        showQuote(); // Start showing quotes
+
         function showSection(sectionId) {
             document.querySelectorAll('main section').forEach(section => {
                 section.classList.add('hidden');
@@ -132,76 +226,70 @@
         }
 
         document.getElementById('chat-input').addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
-    });
-    document.getElementById('chat-input').addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
-});
-
-function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const message = input.value.trim();
-    if (!message) return;
-
-    const chatBox = document.getElementById('chat-box');
-
-    // Append user message
-    const userMessage = document.createElement('div');
-    userMessage.className = 'text-right mb-2';
-    userMessage.innerHTML = `<span class="inline-block bg-blue-600 text-white rounded-lg px-4 py-2">${message}</span>`;
-    chatBox.appendChild(userMessage);
-    input.value = '';
-
-    // Add typing indicator
-    const typingIndicator = document.createElement('div');
-    typingIndicator.id = 'typing-indicator';
-    typingIndicator.className = 'text-left mb-2 text-gray-500 italic';
-    typingIndicator.innerText = 'Haven is typing...';
-    chatBox.appendChild(typingIndicator);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    // Fetch response from backend
-    fetch("http://localhost:5000/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: message })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Remove typing indicator
-        typingIndicator.remove();
-
-        // Create AI message container
-        const aiMessage = document.createElement('div');
-        aiMessage.className = 'text-left mb-2';
-        const aiSpan = document.createElement('span');
-        aiSpan.className = 'inline-block bg-gray-200 rounded-lg px-4 py-2';
-        aiMessage.appendChild(aiSpan);
-        chatBox.appendChild(aiMessage);
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        // Typing animation effect
-        let index = 0;
-        function typeEffect() {
-            if (index < data.response.length) {
-                aiSpan.innerHTML += data.response.charAt(index);
-                index++;
-                chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
-                setTimeout(typeEffect, 20); // Adjust typing speed (lower = faster)
+            if (event.key === 'Enter') {
+                sendMessage();
             }
-        }
-        typeEffect();
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        typingIndicator.remove(); // Remove typing indicator in case of error
-    });
-}
+        });
 
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatBox = document.getElementById('chat-box');
+
+            // Append user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'text-right mb-2';
+            userMessage.innerHTML = `<span class="inline-block bg-blue-600 text-white rounded-lg px-4 py-2">${message}</span>`;
+            chatBox.appendChild(userMessage);
+            input.value = '';
+
+            // Add typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.id = 'typing-indicator';
+            typingIndicator.className = 'text-left mb-2 text-gray-500 italic';
+            typingIndicator.innerText = 'Haven is typing...';
+            chatBox.appendChild(typingIndicator);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Fetch response from backend
+            fetch("http://localhost:5000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove typing indicator
+                typingIndicator.remove();
+
+                // Create AI message container
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'text-left mb-2';
+                const aiSpan = document.createElement('span');
+                aiSpan.className = 'inline-block bg-gray-200 rounded-lg px-4 py-2';
+                aiMessage.appendChild(aiSpan);
+                chatBox.appendChild(aiMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                // Typing animation effect
+                let index = 0;
+                function typeEffect() {
+                    if (index < data.response.length) {
+                        aiSpan.innerHTML += data.response.charAt(index);
+                        index++;
+                        chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
+                        setTimeout(typeEffect, 20); // Adjust typing speed (lower = faster)
+                    }
+                }
+                typeEffect();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                typingIndicator.remove(); // Remove typing indicator in case of error
+            });
+        }
 
         let breathingInterval;
         let timerInterval;
@@ -210,10 +298,13 @@ function sendMessage() {
         function startBreathing() {
             const guide = document.getElementById('breathing-guide');
             const timer = document.getElementById('breathing-timer');
+            const lungAnimation = document.getElementById('lung-animation');
             let step = 0;
             guide.textContent = 'Breathe In...';
             timerCount = 5;
+            lungAnimation.classList.add('breathing');
             timer.textContent = `Time: ${timerCount} seconds`;
+            lungAnimation.style.display = 'block'; // Show lung animation
 
             breathingInterval = setInterval(() => {
                 step = (step + 1) % 3;
@@ -225,7 +316,7 @@ function sendMessage() {
                     timerCount = 5;
                 } else if (step === 2) {
                     guide.textContent = 'Breathe Out...';
-                    timerCount = 8;
+                    timerCount = 5;
                 }
             }, 5000);
 
@@ -242,6 +333,9 @@ function sendMessage() {
             clearInterval(timerInterval);
             document.getElementById('breathing-guide').textContent = '';
             document.getElementById('breathing-timer').textContent = '';
+            const lungAnimation = document.getElementById('lung-animation');
+            lungAnimation.style.display = 'none'; // Hide lung animation
+            lungAnimation.classList.remove('breathing'); // Stop animation
         }
 
         function stopOtherAudios(currentAudio) {
