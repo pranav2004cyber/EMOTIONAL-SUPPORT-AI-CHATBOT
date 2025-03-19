@@ -132,25 +132,25 @@
             <div class="mt-8 space-y-4">
                 <div class="music-card">
                     <div class="audio-controls">
-                        <span class="text-white">Sunny</span>
+                        <span class="text-white"></span>
                         <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mp3">
+                            <source src="https://www.bensound.com/bensound-music/bensound-hope.mp3" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>                        
+                    </div>
+                </div>
+                <div class="music-card">
+                    <div class="audio-controls">
+                        <span class="text-white"></span>
+                        <audio controls class="w-full" onplay="stopOtherAudios(this)">
+                            <source src="https://www.bensound.com/bensound-music/bensound-floatinggarden.mp3" type="audio/mp3">
                             Your browser does not support the audio element.
                         </audio>
                     </div>
                 </div>
                 <div class="music-card">
                     <div class="audio-controls">
-                        <span class="text-white">Creative Minds</span>
-                        <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                            <source src="https://www.bensound.com/bensound-music/bensound-creativeminds.mp3" type="audio/mp3">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                </div>
-                <div class="music-card">
-                    <div class="audio-controls">
-                        <span class="text-white">Relaxing</span>
+                        <span class="text-white"></span>
                         <audio controls class="w-full" onplay="stopOtherAudios(this)">
                             <source src="https://www.bensound.com/bensound-music/bensound-relaxing.mp3" type="audio/mp3">
                             Your browser does not support the audio element.
@@ -159,16 +159,16 @@
                 </div>
                 <div class="music-card">
                     <div class="audio-controls">
-                        <span class="text-white">Sweet</span>
+                        <span class="text-white"></span>
                         <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                            <source src="https://www.bensound.com/bensound-music/bensound-sweet.mp3" type="audio/mp3">
+                            <source src="https://www.bensound.com/bensound-music/bensound-echoofsadness.mp3" type="audio/mp3">
                             Your browser does not support the audio element.
                         </audio>
                     </div>
                 </div>
                 <div class="music-card">
                     <div class="audio-controls">
-                        <span class="text-white">Slow Motion</span>
+                        <span class="text-white"></span>
                         <audio controls class="w-full" onplay="stopOtherAudios(this)">
                             <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mp3">
                             Your browser does not support the audio element.
@@ -177,9 +177,9 @@
                 </div>
                 <div class="music-card">
                     <div class="audio-controls">
-                        <span class="text-white">Dreams</span>
+                        <span class="text-white"></span>
                         <audio controls class="w-full" onplay="stopOtherAudios(this)">
-                            <source src="https://www.bensound.com/bensound-music/bensound-dreams.mp3" type="audio/mp3">
+                            <source src="https://www.bensound.com/bensound-music/bensound-motion.mp3" type="audio/mp3">
                             Your browser does not support the audio element.
                         </audio>
                     </div>
@@ -190,46 +190,65 @@
 
     <script>
         const quotes = [
-            "The best way to predict the future is to create it.",
-            "You are never too old to set another goal or to dream a new dream.",
-            "Believe you can and you're halfway there.",
-            "Act as if what you do makes a difference. It does.",
-            "Success is not final, failure is not fatal: It is the courage to continue that counts."
-        ];
+    "The best way to predict the future is to create it.",
+    "You are never too old to set another goal or to dream a new dream.",
+    "Believe you can and you're halfway there.",
+    "Act as if what you do makes a difference. It does.",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts."
+];
 
-        let currentQuoteIndex = 0;
+let currentQuoteIndex = 0;
 
-        function showQuote() {
-            const quoteBox = document.getElementById('quote-box');
-            quoteBox.textContent = quotes[currentQuoteIndex];
-            quoteBox.classList.add('show');
+function showQuote() {
+    const quoteBox = document.getElementById('quote-box');
+    quoteBox.textContent = quotes[currentQuoteIndex];
+    quoteBox.style.transition = 'opacity 0.5s ease-in-out';
+    quoteBox.style.opacity = '1'; // Fade in effect
 
-            setTimeout(() => {
-                quoteBox.classList.remove('show');
-                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-                setTimeout(showQuote, 500); // Wait before showing the next quote
-            }, 3000); // Show each quote for 3 seconds
-        }
+    setTimeout(() => {
+        quoteBox.style.opacity = '0'; // Fade out effect
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        setTimeout(showQuote, 500); // Wait before showing the next quote
+    }, 5000); // Show each quote for 3 seconds
+}
 
-        showQuote(); // Start showing quotes
+showQuote(); // Start showing quotes
 
-        function showSection(sectionId) {
-            document.querySelectorAll('main section').forEach(section => {
-                section.classList.add('hidden');
-            });
-            document.getElementById(sectionId).classList.remove('hidden');
+function showSection(sectionId) {
+    document.querySelectorAll('main section').forEach(section => {
+        section.classList.add('hidden');
+    });
+    document.getElementById(sectionId).classList.remove('hidden');
 
-            document.querySelectorAll('header nav button').forEach(button => {
-                button.classList.remove('active');
-            });
-            document.getElementById(sectionId + '-btn').classList.add('active');
-        }
+    document.querySelectorAll('header nav button').forEach(button => {
+        button.classList.remove('active');
+    });
+    document.getElementById(sectionId + '-btn').classList.add('active');
+}
 
-        document.getElementById('chat-input').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        });
+// Chat input styling
+const chatInput = document.getElementById('chat-input');
+chatInput.style.width = '100%';
+chatInput.style.padding = '10px';
+chatInput.style.borderRadius = '5px';
+chatInput.style.border = '1px solid #ccc';
+chatInput.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
+chatInput.style.fontSize = '16px';
+chatInput.style.transition = 'border-color 0.3s';
+
+chatInput.addEventListener('focus', () => {
+    chatInput.style.borderColor = '#007BFF'; // Change border color on focus
+});
+
+chatInput.addEventListener('blur', () => {
+    chatInput.style.borderColor = '#ccc'; // Revert border color on blur
+});
+
+chatInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+});
 
         function sendMessage() {
             const input = document.getElementById('chat-input');
