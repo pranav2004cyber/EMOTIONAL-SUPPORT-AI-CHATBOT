@@ -1,9 +1,29 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, session, redirect, url_for, render_template
+from flask_bcrypt import Bcrypt
+from flask_cors import CORS
+import mysql.connector
+import os
 from flask_cors import CORS
 import ollama
+from functools import wraps
 
-app = Flask(__name__)
-CORS(app)
+# Initialize Flask App
+app = Flask(__name__) 
+app.secret_key = 'your_secret_key'  # Required for session management
+bcrypt = Bcrypt(app)
+CORS(app)  # Allow cross-origin requests
+
+# MySQL Database Configuration
+db_config = {
+    "host": "localhost",
+    "user": "root",
+    "password": "1234",
+    "database": "haven_db"
+}
+
+# Function to Connect to MySQL
+def get_db_connection():
+    return mysql.connector.connect(**db_config)
 
 conversation_history = [
     {"role": "system", "content": "You are an empathetic and supportive AI assistant named HAVEN designed to provide emotional support, active listening, and thoughtful guidance. Your responses should be warm, compassionate, and non-judgmental. Validate the user's feelings, ask gentle follow-up questions when appropriate, and offer constructive coping strategies based on psychological principles. Keep responses concise yet meaningful, ensuring users feel heard and understood. If the user expresses distress or crisis, gently encourage seeking professional help while providing comfort and reassurance. Always prioritize kindness, clarity, and a human-like conversational flow. Also add emojis according to the conversation."}
@@ -24,7 +44,7 @@ first_message = True
 
 @app.route("/")
 def home():
-    return render_template("index2.html")
+    return render_template("login.html")
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -94,5 +114,74 @@ def analyze_mental_status(responses):
     else:
         return "The user seems to be in a neutral or positive state. Maintain a warm and engaging conversation style."
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"message": "Username and password are required!"}), 400
+
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({"message": "User registered successfully!"}), 201
+    except mysql.connector.Error as err:
+        return jsonify({"message": "Error: " + str(err)}), 500
+
+# Route for Login
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"message": "Username and password are required!"}), 400
+
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if user and bcrypt.check_password_hash(user['password'], password):
+            session['username'] = username  # Set session variable
+            return jsonify({"message": "Login successful!", "redirect": url_for('index')}), 200
+        else:
+            return jsonify({"message": "Invalid username or password!"}), 401
+    except mysql.connector.Error as err:
+        return jsonify({"message": "Error: " + str(err)}), 500
+
+# Decorator to check if user is logged in
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in session:
+            return redirect(url_for('home'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Route for Index Page (After Login)
+@app.route('/index')
+@login_required
+def index():
+    return render_template('index.html')
+
+# Route for Logout
+@app.route('/logout')
+def logout():
+    session.pop('username', None)  # Clear the session
+    return redirect(url_for('home'))  # Redirect to the home route, which renders login.html
+
+if __name__ == '__main__':
+    app.run(debug=True)
