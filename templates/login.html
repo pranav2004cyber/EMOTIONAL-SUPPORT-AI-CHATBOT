@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='image.png') }}">
+    <title>Welcome to Haven</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script>
+        async function handleSignup() {
+    let username = document.getElementById("signup-username").value;
+    let password = document.getElementById("signup-password").value;
+
+    // Username validation
+    if (username.length < 6 || username.length > 20) {
+        alert("Username must be between 6 and 20 characters long.");
+        return;
+    }
+
+    // Password validation
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{6,}$/;
+    if (!passwordRegex.test(password)) {
+        alert("Password must be at least 6 characters long, contain at least one capital letter, one number, and one special character.");
+        return;
+    }
+
+    // If validation passes, proceed with the signup request
+    let response = await fetch("http://127.0.0.1:5000/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+    });
+    
+
+    let result = await response.json();
+
+        if (!response.ok) {
+            // Handle duplicate username error
+            if (result.message.includes("Duplicate entry")) {
+                alert("Username already exists!");
+            } else {
+                // Handle other errors
+                alert(result.message || "Signup failed. Please try again.");
+            }
+            return;
+        }
+
+        // Signup successful
+        alert("Signup successful!");       
+    if (response.ok) {
+        // Optionally, toggle back to the login form after successful signup
+        container.classList.remove("active");
+    }
+}
+
+        async function handleLogin() {
+            let username = document.getElementById("login-username").value;
+            let password = document.getElementById("login-password").value;
+
+            let response = await fetch("http://127.0.0.1:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            let result = await response.json();
+            alert(result.message);
+
+            if (result.redirect) {
+                window.location.href = result.redirect;
+            }
+        }
+        
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div class="form-box login">
+            <form id="login-form">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <input type="text" id="login-username" placeholder="Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <button type="button" onclick="handleLogin()" class="btn">Login</button>
+                <p></p>
+                <div class="social-icons">
+                    <a href="https://youtu.be/xvFZjo5PgG0?feature=shared"><i class='bx bxl-google'></i></a>
+                    <a href="https://youtu.be/xvFZjo5PgG0?feature=shared"><i class='bx bxl-facebook'></i></a>
+                    <a href="https://youtu.be/xvFZjo5PgG0?feature=shared"><i class='bx bxl-github'></i></a>
+                    <a href="https://youtu.be/xvFZjo5PgG0?feature=shared"><i class='bx bxl-linkedin'></i></a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="form-box register">
+            <form id="signup-form">
+                <h1>Registration</h1>
+                <div class="input-box">
+                    <input type="text" id="signup-username" placeholder="Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <button type="button" onclick="handleSignup()" class="btn">Register</button>
+                <p></p>
+                <div class="social-icons">
+                    <a href="https://youtu.be/xvFZjo5PgG0?feature=shared"><i class='bx bxl-google'></i></a>
+                    <a href="https://youtu.be/xvFZjo5PgG0?feature=shared"><i class='bx bxl-facebook'></i></a>
+                    <a href="https://youtu.be/xvFZjo5PgG0?feature=shared"><i class='bx bxl-github'></i></a>
+                    <a href="https://youtu.be/xvFZjo5PgG0?feature=shared"><i class='bx bxl-linkedin'></i></a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Toggle Box -->
+        <div class="toggle-box">
+            <div class="toggle-panel toggle-left">
+                <h1>Welcome to Haven!</h1>
+                <p>Don't have an account?</p>
+                <button class="btn register-btn">Register</button>
+            </div>
+
+            <div class="toggle-panel toggle-right">
+                <h1>Welcome Back!</h1>
+                <p>Already have an account?</p>
+                <button class="btn login-btn">Login</button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    
+</body>
+</html>
